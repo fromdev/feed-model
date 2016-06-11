@@ -22,14 +22,17 @@ public class Feed {
 		this.maxItems = maxItems;
 	}
 
-	public void addItem(ShareableItem item) {
+	public boolean addItem(ShareableItem item) {
+		boolean success = false;
 		if (!items.contains(item)) {
 			if (items.size() >= maxItems) {
 				items.remove(0);
 			}
 			items.add(item);
+			success = true;
 
 		}
+		return success;
 	}
 
 	public String toRss(int itemNumber) {
@@ -53,6 +56,17 @@ public class Feed {
 		return rss.toString();
 	}
 
+	public String randomItemToRss() {
+		StringBuilder rss = new StringBuilder();
+		rss.append(rssPrefix());
+		ShareableItem randomItem = getRandomItem();
+		if (randomItem != null) {
+			rss.append(randomItem.toRssItem());
+		}
+		rss.append(rssSuffix());
+		return rss.toString();
+	}
+
 	private String itemsToRss() {
 		StringBuilder itemsRssBuilder = new StringBuilder();
 		for (Iterator<ShareableItem> iterator = items.iterator(); iterator
@@ -62,6 +76,18 @@ public class Feed {
 			itemsRssBuilder.append("\n");
 		}
 		return itemsRssBuilder.toString();
+	}
+
+	public ShareableItem getRandomItem() {
+		if (items.size() > 1) {
+			int random = getRandomInRange();
+			return items.get(random);
+		}
+		return null;
+	}
+
+	private int getRandomInRange() {
+		return (int) (Math.random() * (items.size() - 1));
 	}
 
 	private String rssPrefix() {

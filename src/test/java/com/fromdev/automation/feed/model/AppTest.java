@@ -32,13 +32,11 @@ public class AppTest extends TestCase {
 		Feed feed = new Feed("Test", "http://mytesturl.com",
 				"http://myfeedurl.com/feed");
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 1; i++) {
 			ShareableItem item = new ShareableItem();
 			item.setDescription("test desc " + i);
 			item.setUrl("http://www.fromdev.com/item/" + i);
-			;
 			feed.addItem(item);
-
 		}
 		assertNotNull(feed.toRss());
 		System.out.println(feed.toRss());
